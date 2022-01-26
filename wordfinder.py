@@ -1,4 +1,3 @@
-from email.utils import parsedate
 from random import choice
 
 
@@ -7,26 +6,24 @@ class WordFinder:
 
     def __init__(self, path):
         """takes in url, sets to self.url, initializes self.words"""
-        self.words = self.parse_file(path)
-        #self.make_word_list()
-        #make_word_list(open(url))
+        self.words = self.filter_list(self.parse_file(path))
 
     def parse_file(self, path):
         """uses self.url for file path, opens file and reads 
         line by line, appending word to self.words"""
         file = open(path)
-        num_lines = 0
         parsed_words = []
-        parsed_words = [parsed_words.append(line) for line in file]
+        parsed_words = [line for line in file]
 
         file.close()
 
         print(f'{len(parsed_words)} words read')
         return parsed_words
 
-    def filter_list(self):
-        #filter list by stripping
-        self.words = [word.strip() for word in self.words]
+    def filter_list(self, words):
+        # filter list by stripping
+        words = [word.strip() for word in words]
+        return words
 
     def random(self):
         """ returns random word from words, uses random.choice"""
@@ -37,16 +34,10 @@ class SpecialWordFinder(WordFinder):
     """Special Word Finder: find random words from dictionary
     , filters out new lines and comment lines"""
 
-    def __init__(self, url):
-        super().__init__(url)
-        self.filter_list()
-#make_word...
-    def filter_list(self):
-        #filter by stripping and removing #
+    def filter_list(self, words):
         """filters out elements from words 
         list that start with # or are an empty string"""
-        #in super().
-        self.words = [word for word in self.words
-                      if not (word == "" or word.startswith("#"))]
-
-                      #return list
+        words = super().filter_list(words)
+        words = [word for word in words if not (word == "" or word.startswith("#"))]
+        return words
+        
